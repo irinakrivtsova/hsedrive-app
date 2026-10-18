@@ -1,8 +1,8 @@
 package reports
 
 import (
-	"io"
 	"fmt"
+	"io"
 )
 
 type VehicleReporter interface {
@@ -16,7 +16,7 @@ type EquipmentCounter interface {
 
 type ReportData struct {
 	vehicles VehicleReporter
-	equips EquipmentCounter
+	equips   EquipmentCounter
 }
 
 func NewReportData(v VehicleReporter, e EquipmentCounter) *ReportData {
@@ -28,8 +28,8 @@ func (r *ReportData) GetReport(w io.Writer) error {
 	countEquip := r.equips.Len()
 	totalEnergy := r.vehicles.TotalEnergy()
 
-	_, err := fmt.Fprintf(w, `There are a total of %d vehicles in the fleet.
-There are %d items in the warehouse that are subject to inventory.
-The total daily energy consumption of the fleet is %d.`, countVehs, countEquip, totalEnergy)
+	_, err := fmt.Fprintf(w, `В автопарке сейчас %d транспортных средств.
+На складе находится %d единиц оборудования.
+Общее ежедневное потребление энергии автопарком составляет %d.`, countVehs, countEquip, totalEnergy)
 	return err
 }

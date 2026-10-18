@@ -2,12 +2,12 @@ package park
 
 import (
 	"fmt"
-	"hsedrive-app/internal/vehicles"	
+	"hsedrive-app/internal/vehicles"
 )
 
 type Park struct {
 	service Inspection
-	list []vehicles.Vehicle
+	list    []vehicles.Vehicle
 }
 
 type Inspection interface {
@@ -65,4 +65,3 @@ func (a *Park) Filter(inspection Inspection) []vehicles.Vehicle {
 	}
 	return available
 }
-

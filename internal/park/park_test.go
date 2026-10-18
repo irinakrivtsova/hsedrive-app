@@ -2,8 +2,8 @@ package park
 
 import (
 	"errors"
-	"testing"
 	"hsedrive-app/internal/vehicles"
+	"testing"
 )
 
 type SpyInspector struct {
@@ -157,7 +157,7 @@ func TestPark_Filter_Extended(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			p := tt.setupPark()
-			
+
 			got := p.Filter(tt.inspection)
 
 			if len(got) != len(tt.wantIDs) {
@@ -176,20 +176,20 @@ func TestPark_Filter_Extended(t *testing.T) {
 func TestPark_TotalEnergy(t *testing.T) {
 	tests := []struct {
 		name       string
-		setupPark  func() *Park 
-		wantEnergy int         
+		setupPark  func() *Park
+		wantEnergy int
 	}{
 		{
 			name: "Парк с транспортом",
 			setupPark: func() *Park {
 				stub := &StubInspector{stubResult: true}
 				p := NewPark(stub)
-				
+
 				energy := 5
 				_ = p.AddVehicle(vehicles.NewBicycle(1, "test 1", energy, 5))
 				_ = p.AddVehicle(vehicles.NewBicycle(2, "test 2", energy, 5))
 				_ = p.AddVehicle(vehicles.NewBicycle(3, "test 3", energy, 5))
-				
+
 				return p
 			},
 			wantEnergy: 15,
@@ -246,24 +246,24 @@ func TestPark_ForEach(t *testing.T) {
 
 	tests := []struct {
 		name      string
-		setupPark func() *Park 
-		failOnID  int          
-		wantErr   error       
-		wantCalls int        
+		setupPark func() *Park
+		failOnID  int
+		wantErr   error
+		wantCalls int
 	}{
 		{
 			name:      "Полный обход без ошибок",
 			setupPark: makeFilledPark,
-			failOnID:  0,  
-			wantErr:   nil, 
-			wantCalls: 3,   
+			failOnID:  0,
+			wantErr:   nil,
+			wantCalls: 3,
 		},
 		{
 			name:      "Прерывание при ошибке",
 			setupPark: makeFilledPark,
-			failOnID:  2,          
-			wantErr:   expectedErr, 
-			wantCalls: 2,          
+			failOnID:  2,
+			wantErr:   expectedErr,
+			wantCalls: 2,
 		},
 		{
 			name: "Пустой парк",

@@ -7,7 +7,7 @@ type CheckPolicy interface {
 }
 
 type TechInspection struct {
-	normalCompl int
+	normalCompl  int
 	normalEnergy int
 }
 
@@ -33,7 +33,7 @@ func (i *BeginnersInspection) Check(vehicle vehicles.Vehicle) bool {
 
 type ServiceCenter struct {
 	policy CheckPolicy
-} 
+}
 
 func NewServiceCenter(policy CheckPolicy) *ServiceCenter {
 	return &ServiceCenter{policy}

@@ -39,28 +39,28 @@ func TestInventory_ForEach(t *testing.T) {
 	}
 
 	tests := []struct {
-		name       string
+		name        string
 		setupInvent func() *Inventory
-		idOnFail   int
-		wantErr    error
-		countCalls int
+		idOnFail    int
+		wantErr     error
+		countCalls  int
 	}{
 		{
-			name:       "Полный обход инвентаря",
+			name:        "Полный обход инвентаря",
 			setupInvent: setupInvent,
-			idOnFail:   0,
-			wantErr:    nil,
-			countCalls: 3,
+			idOnFail:    0,
+			wantErr:     nil,
+			countCalls:  3,
 		},
 		{
-			name:       "Прерывание на 2 элеменете",
+			name:        "Прерывание на 2 элеменете",
 			setupInvent: setupInvent,
-			idOnFail:   2,
-			wantErr:    expectedErr,
-			countCalls: 2,
+			idOnFail:    2,
+			wantErr:     expectedErr,
+			countCalls:  2,
 		},
 		{
-			name:       "Пустой массив",
+			name: "Пустой массив",
 			setupInvent: func() *Inventory {
 				return NewInventory()
 			},

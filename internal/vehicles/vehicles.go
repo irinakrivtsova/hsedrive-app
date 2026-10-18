@@ -8,9 +8,9 @@ type Vehicle interface {
 }
 
 type BaseVehicle struct {
-	ID int
-	Name string
-	Energy int
+	ID         int
+	Name       string
+	Energy     int
 	Complexity int
 }
 

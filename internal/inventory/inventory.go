@@ -3,11 +3,11 @@ package inventory
 import "fmt"
 
 type Equipment struct {
-	ID int
-	Name string 
+	ID   int
+	Name string
 }
 
-func (e Equipment) GetID() int { return e.ID }
+func (e Equipment) GetID() int      { return e.ID }
 func (e Equipment) GetName() string { return e.Name }
 
 type Inventory struct {

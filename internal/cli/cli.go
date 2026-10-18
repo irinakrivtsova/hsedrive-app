@@ -1,34 +1,34 @@
 package cli
 
 import (
-	"fmt"
-	"os"
-	"io"
 	"bufio"
-	"strings"
+	"fmt"
+	"io"
+	"os"
 	"strconv"
+	"strings"
 
-	"hsedrive-app/internal/vehicles"
-	"hsedrive-app/internal/inventory"
 	"hsedrive-app/internal/inspection"
+	"hsedrive-app/internal/inventory"
 	"hsedrive-app/internal/park"
 	"hsedrive-app/internal/print"
 	"hsedrive-app/internal/reports"
+	"hsedrive-app/internal/vehicles"
 )
 
 type CLI struct {
-	park *park.Park
-	inventory *inventory.Inventory
+	park        *park.Park
+	inventory   *inventory.Inventory
 	parkPrinter *print.Printer
-	invPrinter *print.Printer
-	reporter *reports.ReportData
+	invPrinter  *print.Printer
+	reporter    *reports.ReportData
 
-	reader *bufio.Scanner
-	writer io.Writer
+	reader    *bufio.Scanner
+	writer    io.Writer
 	errWriter io.Writer
 }
 
-func NewCLI(r io.Reader, w io.Writer, ew io.Writer, p *park.Park, i *inventory.Inventory, ppr *print.Printer,  ipr *print.Printer, rep *reports.ReportData) *CLI {
+func NewCLI(r io.Reader, w io.Writer, ew io.Writer, p *park.Park, i *inventory.Inventory, ppr *print.Printer, ipr *print.Printer, rep *reports.ReportData) *CLI {
 	return &CLI{reader: bufio.NewScanner(r), writer: w, errWriter: ew, park: p, inventory: i,
 		parkPrinter: ppr, invPrinter: ipr,
 		reporter: rep}
@@ -49,9 +49,9 @@ func (c *CLI) Run() {
 		switch request[0] {
 		case "add":
 			if len(request) < 2 {
-				fmt.Fprintln(c.errWriter, "Ожидается запрос в формате " +
-				"add vehicle <тип> <id> <название> <энергия> <сложность> " +
-				"или add equip <id> <название>")
+				fmt.Fprintln(c.errWriter, "Ожидается запрос в формате "+
+					"add vehicle <тип> <id> <название> <энергия> <сложность> "+
+					"или add equip <id> <название>")
 				continue
 			}
 			switch request[1] {
@@ -61,8 +61,8 @@ func (c *CLI) Run() {
 				c.handleAddEquip(request[2:])
 			}
 		case "energy":
-			fmt.Fprintf(c.writer, "Суммарное суточное потребление энергии" +
-			"парка составляет %d у. е.\n", c.park.TotalEnergy())
+			fmt.Fprintf(c.writer, "Суммарное суточное потребление энергии"+
+				"парка составляет %d у. е.\n", c.park.TotalEnergy())
 		case "beginners":
 			c.handleBeginners(request)
 		case "park":
@@ -101,7 +101,7 @@ func (c *CLI) handleAddEquip(request []string) {
 	name := strings.Join(request[1:], " ")
 
 	newEquip := inventory.Equipment{ID: id, Name: name}
-	
+
 	if err := c.inventory.Add(newEquip); err != nil {
 		fmt.Fprintf(c.errWriter, "Ошибка добавления: %v\n", err)
 		return
@@ -167,7 +167,7 @@ func (c *CLI) handleBeginners(request []string) {
 		fmt.Fprintln(c.writer, "Подходящего транспорта для новичков не найдено.")
 		return
 	}
-	
+
 	fmt.Fprintln(c.writer, "Список устройств для новичков:")
 
 	for _, val := range list {

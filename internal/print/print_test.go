@@ -29,7 +29,7 @@ func (s *StubPrintable) ForEach(fn func(id int, name string) error) error {
 type errWriter struct{}
 
 func (w errWriter) Write(p []byte) (n int, err error) {
-	return 0, errors.New("ошибка записи")
+	return 0, errors.New("Ошибка записи")
 }
 
 func TestPrinter_Print(t *testing.T) {
@@ -53,15 +53,15 @@ func TestPrinter_Print(t *testing.T) {
 			},
 			useErrW:   false,
 			wantErr:   false,
-			wantPrint: "шлем в наличии, инвентарный номер: 1\nсамокат в наличии, инвентарный номер: 2\n",
+			wantPrint: "Шлем в наличии, инвентарный номер: 1\nСамокат в наличии, инвентарный номер: 2\n",
 		},
 		{
 			name: "Ошибка источника данных (ForEach)",
 			source: &StubPrintable{
-				returnErr: errors.New("сбой базы данных"),
+				returnErr: errors.New("Сбой базы данных"),
 			},
-			useErrW:   false,
-			wantErr:   true,
+			useErrW: false,
+			wantErr: true,
 		},
 		{
 			name: "Ошибка записи (io.Writer)",
@@ -81,7 +81,9 @@ func TestPrinter_Print(t *testing.T) {
 			printer := NewPrinter(tt.source)
 
 			var buf bytes.Buffer
-			var w interface{ Write(p []byte) (n int, err error) } = &buf
+			var w interface {
+				Write(p []byte) (n int, err error)
+			} = &buf
 			if tt.useErrW {
 				w = errWriter{}
 			}

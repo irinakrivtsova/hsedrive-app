@@ -30,7 +30,7 @@ func (s *stubEquipmentCounter) Len() int {
 type stubErrWriter struct{}
 
 func (w stubErrWriter) Write(p []byte) (n int, err error) {
-	return 0, errors.New("ошибка записи")
+	return 0, errors.New("Ошибка записи")
 }
 
 func TestReportData_GetReport(t *testing.T) {
@@ -53,7 +53,7 @@ func TestReportData_GetReport(t *testing.T) {
 			},
 			useErrW:   false,
 			wantErr:   false,
-			wantPrint: "There are a total of 10 vehicles in the fleet.\nThere are 42 items in the warehouse that are subject to inventory.\nThe total daily energy consumption of the fleet is 500.",
+			wantPrint: "В автопарке сейчас 10 транспортных средств.\nНа складе находится 42 единицы оборудования.\nОбщее ежедневное потребление энергии автопарком составляет 500.",
 		},
 		{
 			name: "Ошибка записи (io.Writer)",
@@ -74,7 +74,9 @@ func TestReportData_GetReport(t *testing.T) {
 			rd := NewReportData(tt.vehRep, tt.eqCount)
 
 			var buf bytes.Buffer
-			var w interface{ Write(p []byte) (n int, err error) } = &buf
+			var w interface {
+				Write(p []byte) (n int, err error)
+			} = &buf
 			if tt.useErrW {
 				w = stubErrWriter{}
 			}

@@ -121,7 +121,7 @@ func TestCLI_Commands(t *testing.T) {
 			name:       "Print Park",
 			input:      "park\nexit\n",
 			inspResult: true,
-			wantOut:    "", 
+			wantOut:    "",
 		},
 		{
 			name:       "Print Inventory",
