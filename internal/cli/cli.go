@@ -35,11 +35,7 @@ func NewCLI(r io.Reader, w io.Writer, ew io.Writer, p *park.Park, i *inventory.I
 }
 
 func (c *CLI) Run() {
-	for {
-		if !c.reader.Scan() {
-			break
-		}
-
+	for c.reader.Scan() {
 		request := strings.Fields(c.reader.Text())
 
 		if len(request) == 0 {
@@ -49,7 +45,7 @@ func (c *CLI) Run() {
 		switch request[0] {
 		case "add":
 			if len(request) < 2 {
-				fmt.Fprintln(c.errWriter, "Ожидается запрос в формате "+
+				fmt.Fprintln(c.errWriter, "ожидается запрос в формате "+
 					"add vehicle <тип> <id> <название> <энергия> <сложность> "+
 					"или add equip <id> <название>")
 				continue
@@ -67,13 +63,13 @@ func (c *CLI) Run() {
 			c.handleBeginners(request)
 		case "park":
 			if err := c.parkPrinter.Print(c.writer); err != nil {
-				fmt.Fprintf(c.errWriter, "Ошибка вывода парка: %v\n", err)
+				fmt.Fprintf(c.errWriter, "ошибка вывода парка: %v\n", err)
 			}
 		case "inventory":
 			if c.inventory.Len() == 0 {
 				fmt.Fprintln(c.writer, "Склад инвентаря пуст.")
 			} else if err := c.invPrinter.Print(c.writer); err != nil {
-				fmt.Fprintf(c.errWriter, "Ошибка вывода инвентаря: %v\n", err)
+				fmt.Fprintf(c.errWriter, "ошибка вывода инвентаря: %v\n", err)
 			}
 		case "report":
 			c.handleReport(request)
@@ -103,7 +99,7 @@ func (c *CLI) handleAddEquip(request []string) {
 	newEquip := inventory.Equipment{ID: id, Name: name}
 
 	if err := c.inventory.Add(newEquip); err != nil {
-		fmt.Fprintf(c.errWriter, "Ошибка добавления: %v\n", err)
+		fmt.Fprintf(c.errWriter, "ошибка добавления: %v\n", err)
 		return
 	}
 
@@ -112,7 +108,7 @@ func (c *CLI) handleAddEquip(request []string) {
 
 func (c *CLI) handleAddVehicle(request []string) {
 	if len(request) < 5 {
-		fmt.Fprintln(c.writer, "Формат: add vehicle <type: scooter|bicycle|el-scooter|el-bicycle|unicycle> <id> <name> <energy> <complexity>")
+		fmt.Fprintln(c.writer, "Формат: add vehicle <id> <type: scooter|bicycle|el-scooter|el-bicycle|unicycle> <name> <energy> <complexity>")
 		return
 	}
 
@@ -123,7 +119,7 @@ func (c *CLI) handleAddVehicle(request []string) {
 	compl, errCompl := strconv.Atoi(request[4])
 
 	if errId != nil || errEnergy != nil || errCompl != nil {
-		fmt.Fprintln(c.errWriter, "Ошибка: id, energy и complexity должны быть числами")
+		fmt.Fprintln(c.errWriter, "ошибка: id, energy и complexity должны быть числами")
 		return
 	}
 
@@ -184,7 +180,7 @@ func (c *CLI) handleReport(request []string) {
 		var err error
 		file, err = os.Create(request[1])
 		if err != nil {
-			fmt.Fprintf(c.errWriter, "Ошибка создания файла: %v\n", err)
+			fmt.Fprintf(c.errWriter, "ошибка создания файла: %v\n", err)
 			return
 		}
 		dest = file
@@ -193,7 +189,7 @@ func (c *CLI) handleReport(request []string) {
 	err := c.reporter.GetReport(dest)
 
 	if file != nil {
-		file.Close()
+		_ = file.Close()
 	}
 
 	if err != nil {
